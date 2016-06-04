@@ -1,4 +1,4 @@
-package app.beautifulweather.com.beautifulweather;
+package com.fengbin.beautifulweather;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

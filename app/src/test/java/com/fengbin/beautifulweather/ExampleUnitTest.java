@@ -1,4 +1,4 @@
-package app.beautifulweather.com.beautifulweather;
+package com.fengbin.beautifulweather;
 
 import org.junit.Test;
 
