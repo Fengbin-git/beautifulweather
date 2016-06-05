@@ -9,7 +9,18 @@ public class County {
     private String countyCode;
     private int cityId;
 
+    public County(String countyName, String countyCode, int cityId) {
+        this.countyName = countyName;
+        this.countyCode = countyCode;
+        this.cityId = cityId;
+    }
+
+    public County() {
+
+    }
+
     public int getId() {
+
         return id;
     }
 

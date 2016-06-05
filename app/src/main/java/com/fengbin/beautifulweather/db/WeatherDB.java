@@ -16,7 +16,7 @@ import java.util.List;
  * Created by Administrator on 2016/6/5.
  */
 public class WeatherDB {
-    public static final String DB_NAME = "beautiful_weather";
+    public static final String DB_NAME = "beautiful_weather.db";
     public static final int VERSION = 1;
     private static WeatherDB weatherDB;
     private SQLiteDatabase db;

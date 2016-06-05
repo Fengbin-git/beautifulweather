@@ -9,7 +9,18 @@ public class City {
     private String cityCode;
     private int provinceId;
 
+    public City(String cityName, String cityCode, int provinceId) {
+        this.cityName = cityName;
+        this.cityCode = cityCode;
+        this.provinceId = provinceId;
+    }
+
+    public City() {
+
+    }
+
     public int getId() {
+
         return id;
     }
 

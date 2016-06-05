@@ -8,6 +8,15 @@ public class Province {
     private String provinceName;
     private String provinceCode;
 
+    public Province(String provinceName, String provinceCode) {
+        this.provinceName = provinceName;
+        this.provinceCode = provinceCode;
+    }
+
+    public Province() {
+
+    }
+
     public int getId() {
         return id;
     }
