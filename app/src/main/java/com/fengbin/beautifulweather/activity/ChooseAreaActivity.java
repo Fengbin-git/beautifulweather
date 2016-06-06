@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.fengbin.beautifulweather.R;
 import com.fengbin.beautifulweather.db.WeatherDB;
@@ -52,23 +53,21 @@ public class ChooseAreaActivity extends Activity {
         weatherDB = WeatherDB.getInstance(this);
         title_text = (TextView)findViewById(R.id.title_text);
         list_view = (ListView)findViewById(R.id.list_view);
-        if(dataList.isEmpty()) {
-            queryProvinces();
-        }
         adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,dataList);
         list_view.setAdapter(adapter);
         list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(currentLevel == LEVEL_PROVINCE) {
-                    selectedProvince  = provinceList.get(position);
+                if (currentLevel == LEVEL_PROVINCE) {
+                    selectedProvince = provinceList.get(position);
                     queryCity();
-                }else if(currentLevel == LEVEL_CITY) {
+                } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
                     queryCounties();
                 }
             }
         });
+        queryProvinces();//加载省级数据
     }
 
     private void queryCounties() {
@@ -119,7 +118,7 @@ public class ChooseAreaActivity extends Activity {
         }
     }
 
-    private void queryFromServer(String code, final String type) {
+    private void queryFromServer(final String code, final String type) {
         String address;
         if(!TextUtils.isEmpty(code)) {
             address = "http://www.weather.com.cn/data/list3/city" + code + ".xml";
@@ -128,15 +127,15 @@ public class ChooseAreaActivity extends Activity {
         }
         showProgressDialog();
         HttpUtil.sendHttpRequest(address, new HttpCallBackListener() {
-            boolean result = false;
             @Override
             public void onFinish(String response) {
+                boolean result = false;
                 if("province".equals(type)) {
                     result = Utility.handleProvinceResponse(weatherDB, response);
                 }else if("city".equals(type)) {
                     result = Utility.handleCityResponse(weatherDB,response,selectedProvince.getId());
                 }else if("county".equals(type)) {
-                    result = Utility.handleCountyResponse(weatherDB,response,selectedCounty.getId());
+                    result = Utility.handleCountyResponse(weatherDB,response,selectedCity.getId());
                 }
 
                 if(result) {
@@ -146,6 +145,10 @@ public class ChooseAreaActivity extends Activity {
                             closeProgressDialog();
                             if("province".equals(type)) {
                                 queryProvinces();
+                            } else if("city".equals(type)) {
+                                queryCity();
+                            }else if("county".equals(type)) {
+                                queryCounties();
                             }
                         }
                     });
@@ -154,7 +157,13 @@ public class ChooseAreaActivity extends Activity {
 
             @Override
             public void onError(Exception e) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        closeProgressDialog();
+                        Toast.makeText(ChooseAreaActivity.this, "加载失败！", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -172,6 +181,17 @@ public class ChooseAreaActivity extends Activity {
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(currentLevel == LEVEL_COUNTY) {
+            queryCity();
+        }else if(currentLevel == LEVEL_CITY) {
+            queryProvinces();
+        }else {
+            finish();
+        }
     }
 
     @Override
