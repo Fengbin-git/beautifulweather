@@ -32,7 +32,9 @@ public class WeatherDB {
         }
         return weatherDB;
     }
-
+    /*
+    保存省级数据
+     */
     public void saveProvince(Province province){
         if(province != null) {
             ContentValues values = new ContentValues();
@@ -41,6 +43,9 @@ public class WeatherDB {
             db.insert("Province",null,values);
         }
     }
+    /*
+    读取省级数据
+     */
     public List<Province> loadProvince(){
         List<Province> list = new ArrayList<>();
         Cursor cursor = db.query("Province", null, null, null, null, null, null);
@@ -56,7 +61,9 @@ public class WeatherDB {
         }
         return list;
     }
-
+    /*
+    保存市级数据
+     */
     public void saveCity(City city){
         if(city != null) {
             ContentValues values = new ContentValues();
@@ -66,6 +73,9 @@ public class WeatherDB {
             db.insert("City", null, values);
         }
     }
+    /*
+    读取市级数据
+     */
     public List<City> loadCity(int provinceId){
         List<City> list = new ArrayList<>();
         Cursor cursor = db.query("City", null, "province_id=?", new String[]{String.valueOf(provinceId)}, null, null, null);
@@ -82,7 +92,9 @@ public class WeatherDB {
         }
         return list;
     }
-
+    /*
+    保存县级数据
+     */
     public void saveCounty(County county){
         if(county != null) {
             ContentValues values = new ContentValues();
@@ -92,6 +104,9 @@ public class WeatherDB {
             db.insert("County", null, values);
         }
     }
+    /*
+   读取县级数据
+    */
     public List<County> loadCounty(int cityId){
         List<County> list = new ArrayList<>();
         Cursor cursor = db.query("County", null, "city_id = ?", new String[]{String.valueOf(cityId)}, null, null, null);
