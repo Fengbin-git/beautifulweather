@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fengbin.beautifulweather.R;
+import com.fengbin.beautifulweather.service.AutoUpdateService;
 import com.fengbin.beautifulweather.util.HttpCallBackListener;
 import com.fengbin.beautifulweather.util.HttpUtil;
 import com.fengbin.beautifulweather.util.Utility;
@@ -63,9 +64,11 @@ public class WeatherActivity extends Activity implements View.OnClickListener {
         city_name.setText(sp.getString("city_name",""));
         temp1.setText(sp.getString("temp1",""));
         temp2.setText(sp.getString("temp2",""));
-        weather_desp.setText(sp.getString("weather_desp",""));
-        publish_text.setText("今天" + sp.getString("publish_time","") + "发布");
+        weather_desp.setText(sp.getString("weather_desp", ""));
+        publish_text.setText("今天" + sp.getString("publish_time", "") + "发布");
         current_date.setText(sp.getString("current_date", ""));
+        Intent intent = new Intent(WeatherActivity.this, AutoUpdateService.class);
+        startService(intent);
         weather_info_layout.setVisibility(View.VISIBLE);
         city_name.setVisibility(View.VISIBLE);
     }
